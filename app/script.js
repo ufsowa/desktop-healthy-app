@@ -6,12 +6,18 @@ const App = () => {
   const [time, setTime] = useState(0);
   const [timer, setTimer] = useState(null);
 //  const [workTime, restTime, timeInterval] = [1200, 20, 1000];
-  const [workTime, restTime, timeInterval] = [200, 100, 100];  // test
+  const [workTime, restTime, timeInterval] = [80, 70, 100];  // test
+
+  const playBell = () => {
+    const bell = new Audio('./sounds/bell.wav');
+    bell.play();
+  };
 
   useEffect(() => {
     if(status !== 'off' && time <= 0){
       setStatus(status => status === 'work' ? 'rest' : 'work');
       setTime(_ => status === 'work' ? restTime : workTime);
+      playBell();
     }
   }, [status, time])
 
@@ -28,6 +34,7 @@ const App = () => {
   const startTimer = () => {
     setTime(workTime);
     setStatus('work');
+    if(timer) return;
     setTimer(setInterval(() => {
       setTime(time => time - 1);
     }, timeInterval));
